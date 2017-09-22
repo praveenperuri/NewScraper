@@ -1,18 +1,25 @@
-// Grab the articles as a json
+
 $.getJSON("/articles", function(data) {
-  // For each one
+
   for (var i = 0; i < data.length; i++) {
-    // Display the apropos information on the page
-    $("#articles").append("<button type='button' class='btn btn-primary' data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</button>");
+    var paragraph = $("<p>");
+    var btn = "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#myModal' val='edit' data-id='" + data[i]._id + "'>Edit</button>";
+    paragraph.attr("data-id",data[i]._id);
+    paragraph.html(data[i].title + "<br />" + data[i].link);
+    paragraph.append(btn);
+    $("#articles").append(paragraph);
   }
 });
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-Launch demo modal
-</button>
+// <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+// Launch demo modal
+// </button>
 
-// Whenever someone clicks a p tag
-$(document).on("click", "p", function() {
+$(document).on("click", "button", function() {
+
+var attr = $(this).attr('val');
+if (typeof attr !== typeof undefined && attr !== false) {
+
   // Empty the notes from the note section
   $("#notes").empty();
   // Save the id from the p tag
@@ -43,6 +50,7 @@ $(document).on("click", "p", function() {
         $("#bodyinput").val(data.note.body);
       }
     });
+  }
 });
 
 // When you click the savenote button
